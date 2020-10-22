@@ -55,3 +55,52 @@ Java_com_example_cpptry_NativeTry_stringMethod(JNIEnv *env, jclass clazz, jobjec
     signal(sig, olddump);
     return env->NewStringUTF("cache");
 }
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_example_cpptry_NativeTry_intFromJNI6(JNIEnv *env, jobject thiz) {
+    abort();
+    return 0;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_cpptry_NativeTry_voidFromJNI6(JNIEnv *env, jobject thiz) {
+    abort();
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_example_cpptry_NativeTry_stringMethodInt(JNIEnv *env, jclass clazz, jobject obj,
+                                                  jobject method, int def, jint sig) {
+    LOG_DEBUG("stringMethodInt:sig=%d", sig);
+    sighandler_t olddump = signal(sig, sighandlerdump);
+    int res = setjmp(envdump);
+    LOG_DEBUG("stringMethodInt:res=%d,sig=%d", res, sig);
+    if (res == 0) {
+        jmethodID jmethodId = env->FromReflectedMethod(method);
+        jint jobject1 = env->CallIntMethod(obj, jmethodId);
+        signal(sig, olddump);
+        return jobject1;
+    }
+    signal(sig, olddump);
+    return def;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_cpptry_NativeTry_stringMethodVoid(JNIEnv *env, jclass clazz, jobject obj,
+                                                   jobject method, jint sig) {
+
+    LOG_DEBUG("stringMethodVoid:sig=%d", sig);
+    sighandler_t olddump = signal(sig, sighandlerdump);
+    int res = setjmp(envdump);
+    LOG_DEBUG("stringMethodVoid:res=%d,sig=%d", res, sig);
+    if (res == 0) {
+        jmethodID jmethodId = env->FromReflectedMethod(method);
+        env->CallVoidMethod(obj, jmethodId);
+        signal(sig, olddump);
+        return;
+    }
+    signal(sig, olddump);
+}

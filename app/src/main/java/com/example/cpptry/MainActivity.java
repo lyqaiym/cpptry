@@ -21,13 +21,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-
                     Method m = NativeTry.class.getDeclaredMethod("stringFromJNI6");
                     Method m2 = NativeTry.class.getDeclaredMethod("stringFromJNI11");
+                    Method m3 = NativeTry.class.getDeclaredMethod("intFromJNI6");
+                    Method m4 = NativeTry.class.getDeclaredMethod("voidFromJNI6");
                     NativeTry nativeTry = new NativeTry();
                     String s1 = NativeTry.javaStringMethod(nativeTry, m, NativeTry.SIGABRT);
                     String s2 = NativeTry.javaStringMethod(nativeTry, m2, NativeTry.SIGSEGV);
-                    tv.setText("s=" + s1 + "," + s2);
+                    int a1 = NativeTry.javaIntMethod(nativeTry, m3, -1, NativeTry.SIGABRT);
+                    NativeTry.javaVoidMethod(nativeTry, m4, NativeTry.SIGABRT);
+                    tv.setText("s=" + s1 + "," + s2 + "," + a1);
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
                 }
