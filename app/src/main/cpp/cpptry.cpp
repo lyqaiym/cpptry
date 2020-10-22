@@ -10,7 +10,7 @@
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_cpptry_MainActivity_stringFromJNI6(
+Java_com_example_cpptry_NativeTry_stringFromJNI6(
         JNIEnv *env,
         jobject obj) {
     abort();
@@ -23,7 +23,7 @@ struct Test {
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_cpptry_MainActivity_stringFromJNI11(
+Java_com_example_cpptry_NativeTry_stringFromJNI11(
         JNIEnv *env,
         jobject obj) {
     Test *t = nullptr;
