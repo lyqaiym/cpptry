@@ -6,6 +6,11 @@ import java.lang.reflect.Method;
 
 public class NativeTry {
 
+    // Used to load the 'native-lib' library on application startup.
+    static {
+        System.loadLibrary("cpptry");
+    }
+
     public static String javaStringMethod(Object obj, Method method) {
         String s = stringMethod(obj, method);
         return s;
