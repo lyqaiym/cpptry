@@ -10,15 +10,28 @@
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_cpptry_MainActivity_stringFromJNI(
+Java_com_example_cpptry_MainActivity_stringFromJNI6(
         JNIEnv *env,
-        jobject /* this */) {
+        jobject obj) {
     abort();
     return env->NewStringUTF("Hello from C++");
 }
 
+struct Test {
+    int a;
+};
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_example_cpptry_MainActivity_stringFromJNI11(
+        JNIEnv *env,
+        jobject obj) {
+    Test *t = nullptr;
+    int m = t->a;
+    return env->NewStringUTF("Hello from C++");
+}
+
 jmp_buf envdump;
-sighandler_t olddump;
 
 void sighandlerdump(int sig) {
     LOG_DEBUG("sighandlerdump:sig=%d", sig);
@@ -28,17 +41,17 @@ void sighandlerdump(int sig) {
 extern "C"
 JNIEXPORT jstring JNICALL
 Java_com_example_cpptry_NativeTry_stringMethod(JNIEnv *env, jclass clazz, jobject obj,
-                                               jobject method) {
-
-    olddump = signal(SIGABRT, sighandlerdump);
+                                               jobject method, int sig) {
+    LOG_DEBUG("stringMethod:sig=%d", sig);
+    sighandler_t olddump = signal(sig, sighandlerdump);
     int res = setjmp(envdump);
-    LOG_DEBUG("stringMethod:res=%d", res);
+    LOG_DEBUG("stringMethod:res=%d,sig=%d", res, sig);
     if (res == 0) {
         jmethodID jmethodId = env->FromReflectedMethod(method);
         jobject jobject1 = env->CallObjectMethod(obj, jmethodId);
-        signal(SIGABRT, olddump);
-        return (jstring)jobject1;
+        signal(sig, olddump);
+        return (jstring) jobject1;
     }
-    signal(SIGABRT, olddump);
+    signal(sig, olddump);
     return env->NewStringUTF("cache");
 }
