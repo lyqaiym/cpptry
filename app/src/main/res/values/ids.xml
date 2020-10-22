@@ -1,0 +1,5 @@
+<resources>
+    <item name="bt_testStr" type="id" />
+    <item name="bt_testInt" type="id" />
+    <item name="bt_testVoid" type="id" />
+</resources>

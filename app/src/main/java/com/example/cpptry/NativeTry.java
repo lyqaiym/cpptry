@@ -25,22 +25,22 @@ public class NativeTry {
     public native void voidFromJNI6();
 
     public static String javaStringMethod(Object obj, Method method, int signal) {
-        String s = stringMethod(obj, method, signal);
+        String s = tryMethodStr(obj, method, signal);
         return s;
     }
 
     public static int javaIntMethod(Object obj, Method method, int def, int signal) {
-        int i = stringMethodInt(obj, method, def, signal);
+        int i = tryMethodInt(obj, method, def, signal);
         return i;
     }
 
     public static void javaVoidMethod(Object obj, Method method, int signal) {
-        stringMethodVoid(obj, method, signal);
+        tryMethodVoid(obj, method, signal);
     }
 
-    native static String stringMethod(Object obj, Method method, int signal);
+    native static String tryMethodStr(Object obj, Method method, int signal);
 
-    native static int stringMethodInt(Object obj, Method method, int def, int signal);
+    native static int tryMethodInt(Object obj, Method method, int def, int signal);
 
-    native static void stringMethodVoid(Object obj, Method method, int signal);
+    native static void tryMethodVoid(Object obj, Method method, int signal);
 }
